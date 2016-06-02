@@ -101,7 +101,7 @@ resource "aws_elb" "demo" {
 }
 
 resource "aws_instance" "web" {
-  count = "2"
+  count = "5"
 
   ami           = "${lookup(var.aws_amis, var.aws_region)}"
   instance_type = "t2.micro"
@@ -109,6 +109,10 @@ resource "aws_instance" "web" {
 
   vpc_security_group_ids = ["${aws_security_group.demo.id}"]
   subnet_id              = "${aws_subnet.demo.id}"
+
+  tags {
+    Name = "demo-${count.index}"
+  }
 
   connection {
     user        = "ubuntu"
